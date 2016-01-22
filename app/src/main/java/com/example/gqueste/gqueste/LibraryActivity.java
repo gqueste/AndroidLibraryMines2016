@@ -21,6 +21,10 @@ public class LibraryActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_library);
 
+
+        //TODO Fragments : create Library Fragment
+
+
         List<Book> books = getBooks();
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.library_recycler_view);
