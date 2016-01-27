@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,11 +27,20 @@ public class LibraryActivity extends AppCompatActivity {
         //TODO Fragments : create Library Fragment
 
 
-        List<Book> books = getBooks();
+        final List<Book> books = getBooks();
 
         RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.library_recycler_view);
+        mRecyclerView.addOnItemTouchListener(new BookItemClickListener(this,
+                new BookItemClickListener.SimpleOnItemClickListener(){
+                    @Override
+                    public void onItemClick(View childView, int position) {
+                        Toast.makeText(childView.getContext(), books.get(position).title, Toast.LENGTH_SHORT).show();
+                    }
+                }));
         mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mRecyclerView.setLayoutManager(new
+
+    LinearLayoutManager(this));
 
         RecyclerView.Adapter mAdapter = new BookAdapter(books);
         mRecyclerView.setAdapter(mAdapter);
