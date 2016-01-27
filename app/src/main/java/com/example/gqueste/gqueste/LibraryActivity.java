@@ -1,5 +1,6 @@
 package com.example.gqueste.gqueste;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -34,7 +35,9 @@ public class LibraryActivity extends AppCompatActivity {
         RecyclerView.Adapter mAdapter = new BookAdapter(books, new BookItemClickReaction() {
             @Override
             public void doAction(Book b) {
-                Toast.makeText(activity, b.title, Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(LibraryActivity.this, BookActivity.class);
+                intent.putExtra(BookActivity.BOOK, b);
+                activity.startActivity(intent);
             }
         });
         mRecyclerView.setAdapter(mAdapter);
