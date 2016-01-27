@@ -7,5 +7,11 @@
     android:orientation="vertical"
     tools:context="com.example.gqueste.gqueste.LibraryActivity">
 
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/library_recycler_view"
+        android:scrollbars="vertical"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"/>
+
 
 </FrameLayout>

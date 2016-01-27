@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -17,18 +18,29 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     private List<Book> mDataset;
 
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public View mView;
 
+        public Book currentBook;
         public TextView nameTextView;
         public TextView priceTextView;
 
         public ViewHolder(View v) {
             super(v);
+            v.setOnClickListener(this);
             mView = v;
             nameTextView = (TextView) v.findViewById(R.id.nameTextView);
             priceTextView = (TextView) v.findViewById(R.id.priceTextView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(v.getContext(), this.currentBook.title, Toast.LENGTH_SHORT).show();
+        }
+
+        public void setCurrentBook(Book b){
+            this.currentBook = b;
         }
     }
 
@@ -51,6 +63,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
         Book book = mDataset.get(position);
+        holder.setCurrentBook(book);
         holder.nameTextView.setText(book.title);
         holder.priceTextView.setText(String.valueOf(book.price));
     }
