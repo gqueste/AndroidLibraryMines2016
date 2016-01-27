@@ -17,6 +17,7 @@ import java.util.List;
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
     private List<Book> mDataset;
+    private BookItemClickReaction bookItemClickReaction;
 
     public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
@@ -25,18 +26,20 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public Book currentBook;
         public TextView nameTextView;
         public TextView priceTextView;
+        public BookItemClickReaction reaction;
 
-        public ViewHolder(View v) {
+        public ViewHolder(View v, BookItemClickReaction reaction) {
             super(v);
             v.setOnClickListener(this);
             mView = v;
+            this.reaction = reaction;
             nameTextView = (TextView) v.findViewById(R.id.nameTextView);
             priceTextView = (TextView) v.findViewById(R.id.priceTextView);
         }
 
         @Override
         public void onClick(View v) {
-            Toast.makeText(v.getContext(), this.currentBook.title, Toast.LENGTH_SHORT).show();
+            reaction.doAction(this.currentBook);
         }
 
         public void setCurrentBook(Book b){
@@ -45,8 +48,9 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BookAdapter(List<Book> myDataset) {
+    public BookAdapter(List<Book> myDataset, BookItemClickReaction reaction) {
         mDataset = myDataset;
+        this.bookItemClickReaction = reaction;
     }
 
     // Create new views (invoked by the layout manager)
@@ -56,7 +60,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.custom_view_item_book, parent, false);
 
-        ViewHolder vh = new ViewHolder(v);
+        ViewHolder vh = new ViewHolder(v, this.bookItemClickReaction);
         return vh;
     }
 
