@@ -1,13 +1,17 @@
 package com.example.gqueste.gqueste;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -16,6 +20,7 @@ import java.util.List;
  */
 public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
 
+    private Activity activity;
     private List<Book> mDataset;
     private BookItemClickReaction bookItemClickReaction;
 
@@ -26,6 +31,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         public Book currentBook;
         public TextView nameTextView;
         public TextView priceTextView;
+        public ImageView coverImageView;
         public BookItemClickReaction reaction;
 
         public ViewHolder(View v, BookItemClickReaction reaction) {
@@ -35,6 +41,7 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
             this.reaction = reaction;
             nameTextView = (TextView) v.findViewById(R.id.nameTextView);
             priceTextView = (TextView) v.findViewById(R.id.priceTextView);
+            coverImageView = (ImageView) v.findViewById(R.id.coverImageView);
         }
 
         @Override
@@ -48,9 +55,10 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public BookAdapter(List<Book> myDataset, BookItemClickReaction reaction) {
+    public BookAdapter(List<Book> myDataset, BookItemClickReaction reaction, Activity activity) {
         mDataset = myDataset;
         this.bookItemClickReaction = reaction;
+        this.activity = activity;
     }
 
     // Create new views (invoked by the layout manager)
@@ -69,7 +77,13 @@ public class BookAdapter extends RecyclerView.Adapter<BookAdapter.ViewHolder> {
         Book book = mDataset.get(position);
         holder.setCurrentBook(book);
         holder.nameTextView.setText(book.title);
-        holder.priceTextView.setText(String.valueOf(book.price));
+        holder.priceTextView.setText(String.valueOf(book.price) + " €");
+
+        Picasso.with(this.activity)
+                .load(book.cover)
+                .fit()
+                .centerCrop()
+                .into(holder.coverImageView);
     }
 
     @Override

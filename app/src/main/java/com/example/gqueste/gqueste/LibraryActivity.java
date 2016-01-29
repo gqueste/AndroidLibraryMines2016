@@ -42,9 +42,6 @@ public class LibraryActivity extends AppCompatActivity {
                 .build();
         HenriPotierService service = retrofit.create(HenriPotierService.class);
         Call<List<Book>> call = service.listBooks();
-        if(books == null){
-            Toast.makeText(this, "Retrieving data", Toast.LENGTH_SHORT).show();
-        }
         call.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Response<List<Book>> response, Retrofit retrofit) {
@@ -60,7 +57,7 @@ public class LibraryActivity extends AppCompatActivity {
                         intent.putExtra(BookActivity.BOOK, b);
                         activity.startActivity(intent);
                     }
-                });
+                }, activity);
                 mRecyclerView.setAdapter(mAdapter);
             }
 
