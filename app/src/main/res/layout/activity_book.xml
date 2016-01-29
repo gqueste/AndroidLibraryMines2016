@@ -1,6 +1,61 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
 
-</LinearLayout>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/bookTitleTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/title_book_activity_size"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:text="Titre du livre"
+                />
+
+            <ImageView
+                android:id="@+id/bookCoverImageView"
+                android:layout_width="@dimen/cover_book_width"
+                android:layout_height="@dimen/cover_book_height" />
+
+            <TextView
+                android:id="@+id/bookIsbnTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="ISBN du livre"
+                android:gravity="center"/>
+
+            <TextView
+                android:id="@+id/bookPriceTextView"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_margin="@dimen/margin_item_view"
+                android:textSize="@dimen/price_book_activity_size"
+                android:paddingTop="@dimen/margin_item_view"
+                android:text="15 €"
+                />
+
+            <Button
+                android:id="@+id/button_buy_amazon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/margin_item_view"
+                android:background="@color/colorAmazon"
+                android:text="@string/buy_button"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+    
+</FrameLayout>
