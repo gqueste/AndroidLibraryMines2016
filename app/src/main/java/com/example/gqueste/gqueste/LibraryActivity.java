@@ -22,6 +22,7 @@ public class LibraryActivity extends AppCompatActivity {
 
 
     private static final Random RANDOM = new Random(); //TODO remove
+    private List<Book> books;
 
 
     @Override
@@ -41,15 +42,18 @@ public class LibraryActivity extends AppCompatActivity {
                 .build();
         HenriPotierService service = retrofit.create(HenriPotierService.class);
         Call<List<Book>> call = service.listBooks();
+        if(books == null){
+            Toast.makeText(this, "Retrieving data", Toast.LENGTH_SHORT).show();
+        }
         call.enqueue(new Callback<List<Book>>() {
             @Override
             public void onResponse(Response<List<Book>> response, Retrofit retrofit) {
                 // success
-                List<Book> books = new ArrayList<>();
+                activity.books = new ArrayList<>();
                 for (Book b : response.body()) {
                     books.add(b);
                 }
-                RecyclerView.Adapter mAdapter = new BookAdapter(books, new BookItemClickReaction() {
+                RecyclerView.Adapter mAdapter = new BookAdapter(activity.books, new BookItemClickReaction() {
                     @Override
                     public void doAction(Book b) {
                         Intent intent = new Intent(LibraryActivity.this, BookActivity.class);
@@ -63,7 +67,7 @@ public class LibraryActivity extends AppCompatActivity {
             @Override
             public void onFailure(Throwable t) {
                 // error occurred
-                //TODO
+                Toast.makeText(activity, "Can not connect to THE INTERNET.", Toast.LENGTH_LONG).show();
             }
         });
 
