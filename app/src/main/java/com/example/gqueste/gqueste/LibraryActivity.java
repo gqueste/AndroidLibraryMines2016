@@ -12,6 +12,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.GsonConverterFactory;
+import retrofit.Response;
+import retrofit.Retrofit;
+
 public class LibraryActivity extends AppCompatActivity {
 
 
@@ -25,31 +31,42 @@ public class LibraryActivity extends AppCompatActivity {
 
         final LibraryActivity activity = this;
 
-
-        List<Book> books = getBooks();
-
-        RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.library_recycler_view);
+        final RecyclerView mRecyclerView = (RecyclerView) findViewById(R.id.library_recycler_view);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
-        RecyclerView.Adapter mAdapter = new BookAdapter(books, new BookItemClickReaction() {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("http://henri-potier.xebia.fr/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+        HenriPotierService service = retrofit.create(HenriPotierService.class);
+        Call<List<Book>> call = service.listBooks();
+        call.enqueue(new Callback<List<Book>>() {
             @Override
-            public void doAction(Book b) {
-                Intent intent = new Intent(LibraryActivity.this, BookActivity.class);
-                intent.putExtra(BookActivity.BOOK, b);
-                activity.startActivity(intent);
+            public void onResponse(Response<List<Book>> response, Retrofit retrofit) {
+                // success
+                List<Book> books = new ArrayList<>();
+                for (Book b : response.body()) {
+                    books.add(b);
+                }
+                RecyclerView.Adapter mAdapter = new BookAdapter(books, new BookItemClickReaction() {
+                    @Override
+                    public void doAction(Book b) {
+                        Intent intent = new Intent(LibraryActivity.this, BookActivity.class);
+                        intent.putExtra(BookActivity.BOOK, b);
+                        activity.startActivity(intent);
+                    }
+                });
+                mRecyclerView.setAdapter(mAdapter);
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                // error occurred
+                //TODO
             }
         });
-        mRecyclerView.setAdapter(mAdapter);
 
-    }
-
-    private List<Book> getBooks() {
-        ArrayList<Book> books = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            books.add(new Book("eyubzeuvzeyvzyeuvyvytvuzeu", String.format("Garry Potier Tome %d", i), RANDOM.nextInt(30), "http://google.com"));
-        }
-        return books;
     }
 }
 
